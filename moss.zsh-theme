@@ -1,7 +1,24 @@
+# Colours
+WHITE="$FG[015]"
+RED="$FG[196]"
+GREEN="$FG[048]"
+DARK_GREEN="$FG[082]"
+GREY="$FG[248]"
+ORANGE="$FG[208]"
+RESET="$reset_color"
+
+ZSH_THEME_GIT_PROMPT_PREFIX="$RED"
+ZSH_THEME_GIT_PROMPT_SUFFIX="$reset_color"
+
+# git prompt status
+ZSH_THEME_GIT_PROMPT_DIRTY="$RED\xe2\x9c\x97\x0a"
+ZSH_THEME_GIT_PROMPT_CLEAN="$DARK_GREEN\xe2\x9c\x94\x0a"
+
+PROMPT_ARROW="\xe2\x9e\x94\x0a" # ➔
 
 function git_prompt_info() {
   ref=$(git symbolic-ref HEAD 2> /dev/null) || return
-  echo "$ZSH_THEME_GIT_PROMPT_PREFIX$(parse_git_dirty) $(current_branch)$ZSH_THEME_GIT_PROMPT_SUFFIX"
+  echo "$ZSH_THEME_GIT_PROMPT_PREFIX$GREY%{$(current_branch)%} $(git_prompt_short_sha) $(parse_git_dirty)$ZSH_THEME_GIT_PROMPT_SUFFIX"
 }
 
 function get_pwd() {
@@ -9,13 +26,8 @@ function get_pwd() {
 }
 
 function get_prompt() {
-  echo "%(?.$FG[048].$FG[196])\xe2\x9e\x94\x0a"
+  echo "%(?.$GREEN.$RED)$PROMPT_ARROW"
 }
 
-PROMPT='$FG[248]%* $FG[248]%n@%M $FG[048][$(get_pwd)] $FG[248]$(git_prompt_info)
-$reset_color $(get_prompt)  $reset_color'
-
-ZSH_THEME_GIT_PROMPT_PREFIX="$FG[196]"
-ZSH_THEME_GIT_PROMPT_SUFFIX="$reset_color"
-ZSH_THEME_GIT_PROMPT_DIRTY="$FG[196] \xe2\x9c\x97\x0a"
-ZSH_THEME_GIT_PROMPT_CLEAN="$FG[082] \xe2\x9c\x94\x0a"
+PROMPT='$WHITE%n@%M $GREY%*$GREEN [$(get_pwd)] $(git_prompt_info)
+$(get_prompt)  $RESET'
